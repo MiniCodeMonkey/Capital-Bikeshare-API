@@ -3,6 +3,10 @@ Capital Bikeshare API
 
 Scrapes your member information from http://capitalbikeshare.com and outputs it nicely formatted as JSON
 
+Example
+-------------------------
+Online version available at https://bikeshare.dotsquare.dk/rentals
+
 Features
 -------------------------
 - Rental history
