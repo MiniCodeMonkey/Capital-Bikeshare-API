@@ -6,13 +6,23 @@ Scrapes your member information from http://capitalbikeshare.com and outputs it 
 
 A local environment to interact with the data can be set up straight away if you're running PHP 5.4+
 
-	$ php -S localhost:8080 -t public/
+Install composer dependencies
 
-  $ curl --user bikeshareusername:bikesharepassword http://localhost:8080/rentals
+`$ composer install`
+
+> Read more about Composer [here](https://getcomposer.org)
+
+Start local webserver
+
+`$ php -S localhost:8080 -t public/`
+
+Perform API request
+
+`$ curl --user bikeshareusername:bikesharepassword http://localhost:8080/rentals`
 
 > Note: Depending on your rental history size, this may take a little while (It takes 2 1/2 minute to scrape my 300+ rentals).
 
-If you're running this on a regular webserver, make sure that the `data` folder is writable by the webserver user. E.g. `chmod -R 777 data/`.
+If you're running this on a regular webserver, make sure that the `data` folder is writable by the webserver user. E.g. `chmod -R 777 data/`
 
 ### Example output
 ```json
