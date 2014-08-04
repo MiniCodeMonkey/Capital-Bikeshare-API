@@ -1,0 +1,67 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "hash": "8b2b2004a07e7c4477903e9dbf39ff6a",
+    "packages": [
+        {
+            "name": "thauex/simple-html-dom",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ThauEx/SimpleHtmlDom.git",
+                "reference": "c23e52cde291b7e8d8c793ade120abccefbe6a48"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ThauEx/SimpleHtmlDom/zipball/c23e52cde291b7e8d8c793ade120abccefbe6a48",
+                "reference": "c23e52cde291b7e8d8c793ade120abccefbe6a48",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "ThauEx\\SimpleHtmlDom": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "John Schlick",
+                    "homepage": "http://john_schlick.users.sourceforge.net/",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Thau",
+                    "email": "thau.exodus@gmail.com"
+                }
+            ],
+            "description": "Modified version of http://sourceforge.net/projects/simplehtmldom/ with cache support",
+            "time": "2014-02-25 07:40:24"
+        }
+    ],
+    "packages-dev": [
+
+    ],
+    "aliases": [
+
+    ],
+    "minimum-stability": "stable",
+    "stability-flags": {
+        "thauex/simple-html-dom": 20
+    },
+    "platform": [
+
+    ],
+    "platform-dev": [
+
+    ]
+}

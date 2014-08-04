@@ -1,6 +1,5 @@
 <?php
-require('APIException.php');
-require('BikeshareParser.php');
+require('../vendor/autoload.php');
 
 header('Content-Type: application/json');
 
@@ -13,17 +12,17 @@ try
 	$endpoint = ucfirst(strtolower($endpoint)); // Normalize name
 
 	// Check if we support this endpoint
-	if (!file_exists('endpoints/' . $endpoint . '.php'))
+	$endpointClassName = '\\Scraper\\Endpoints\\' . $endpoint . 'Endpoint';
+	if (!class_exists($endpointClassName))
 	{
-		throw new APIException('Endpoint doesn\'t exist');
+		throw new Scraper\APIException('Endpoint doesn\'t exist');
 	}
 
 	// Run parser for the endpoint
-	require('endpoints/' . $endpoint . '.php');
-	$parser = new $endpoint();
+	$parser = new $endpointClassName();
 	$parser->run();
 }
-catch (APIException $e)
+catch (Scraper\APIException $e)
 {
 	echo json_encode(array(
 		'error' => $e->getMessage()

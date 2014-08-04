@@ -1,0 +1,10 @@
+{
+    "name": "Capital-Bikeshare-API",
+    "description": "Scrapes your member information and outputs it nicely formatted as JSON",
+    "require": {
+    	"thauex/simple-html-dom": "dev-master"
+    },
+    "autoload": {
+        "psr-0": { "Scraper": "src/" }
+    }
+}

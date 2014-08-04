@@ -1,12 +1,12 @@
-<?php
-require('simple_html_dom.php');
+<?php namespace Scraper;
 
 class BikeshareParser
 {
 	const USER_AGENT = 'Bikeshare parser';
 	private $cookieJar = array();
-	private $username, $password;
-	private $requireHTTPS = true; // Should always be set to true for production use
+	protected $username;
+	private $password;
+	protected $isAuthenticated = false;
 	
 	private function fillCookieJar($http_response_header)
 	{		
@@ -33,6 +33,10 @@ class BikeshareParser
 		return substr($cookiesString, 0, -2);
 	}
 
+	private function requiresHTTPS() {
+		return ($_SERVER['SERVER_NAME'] != 'localhost'); // Require HTTPS for anything but localhost
+	}
+
 	private function isSSL()
 	{
 		return (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443);
@@ -41,7 +45,7 @@ class BikeshareParser
 	private function validateLogin()
 	{
 		// Check if using SSL
-		if ($this->requireHTTPS && empty($_SERVER['HTTPS']))
+		if ($this->requiresHTTPS() && !$this->isSSL())
 		{
 			throw new APIException('Please access the API using HTTPS');
 		}
@@ -73,7 +77,7 @@ class BikeshareParser
 			'password' => $this->password,
 		);
 		
-		// Post and authenticate to Bikesahre
+		// Post and authenticate to Bikeshare
 		$data = http_build_query($data); // Convert array to http query string
 		$opts = array(
 		  'http' => array(
@@ -86,12 +90,11 @@ class BikeshareParser
 		);
 		
 		$context = stream_context_create($opts);
-		$loginPage = file_get_contents("https://capitalbikeshare.com/login", false, $context);
+		$loginPage = file_get_contents("https://www.capitalbikeshare.com/login", false, $context);
 
-		// Destroy username, password and data
-		unset($this->username);
+		// Destroy password and data
 		unset($this->password);
-		unset($this->data);
+		unset($data);
 
 		// Check for redirect header
 		$headers = $this->http_parse_headers($http_response_header);
@@ -103,9 +106,11 @@ class BikeshareParser
 		}
 		
 		$this->fillCookieJar($http_response_header);
+
+		$this->isAuthenticated = true;
 	}
 
-	function http_parse_headers($headers)
+	private function http_parse_headers($headers)
 	{
 	    foreach ($headers as $header)
 	    {
@@ -122,7 +127,7 @@ class BikeshareParser
 		return $headerdata;
     }
 
-	function request($url)
+	protected function request($url)
 	{
 		// Retreive the page
 		$opts = array(
@@ -136,4 +141,9 @@ class BikeshareParser
 		$context = stream_context_create($opts);
 		return file_get_contents($url, false, $context);
 	}
+
+	protected function getDataPath() {
+		return dirname(__FILE__) . '/../../data';
+	}
+
 }
