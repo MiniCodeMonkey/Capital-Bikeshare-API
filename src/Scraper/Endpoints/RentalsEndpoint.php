@@ -31,12 +31,20 @@ class RentalsEndpoint extends BikeshareParser
 
 			$trips = array();
 			$index = 0;
+
+			$lastPageIndex = null;
+
 			do
 			{
 				$page = $this->request('https://www.capitalbikeshare.com/member/rentals/' . $index);
 				
 				$html = \ThauEx\SimpleHtmlDom\SHD::strGetHtml($page);
 				$pageTrips = 0;
+
+				if ($lastPageIndex == null) {
+					$parts = explode('/', trim($html->find('.pagination a', -1)->href, '/'));
+					$lastPageIndex = $parts[count($parts) - 1];
+				}
 
 				foreach ($html->find('table', 1)->find('tr') as $row)
 				{
@@ -80,7 +88,7 @@ class RentalsEndpoint extends BikeshareParser
 				}
 
 				$index += 20;
-			} while ($pageTrips == 20);
+			} while ($index <= $lastPageIndex);
 
 			$jsonData = json_encode($trips);
 			$this->saveToCache($jsonData);
