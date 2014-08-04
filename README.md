@@ -6,19 +6,21 @@ Scrapes your member information from http://capitalbikeshare.com and outputs it 
 
 A local environment to interact with the data can be set up straight away if you're running PHP 5.4+
 
-Install composer dependencies
+### Install composer dependencies
 
 `$ composer install`
 
 > Read more about Composer [here](https://getcomposer.org)
 
-Start local webserver
+### Start local webserver
 
 `$ php -S localhost:8080 -t public/`
 
-Perform API request
+### Perform API request
 
-`$ curl --user bikeshareusername:bikesharepassword http://localhost:8080/rentals`
+`$ curl --user bikeshareusername http://localhost:8080/rentals`
+
+*You will be prompted to enter you Bikeshare Password*
 
 > Note: Depending on your rental history size, this may take a little while (It takes 2 1/2 minute to scrape my 300+ rentals).
 
