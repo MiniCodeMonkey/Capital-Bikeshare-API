@@ -34,9 +34,11 @@ class RentalsEndpoint extends BikeshareParser
 
 			$lastPageIndex = null;
 
+			$reauthenticateTries = 0;
 			do
 			{
-				$page = $this->request('https://www.capitalbikeshare.com/member/rentals/' . $index);
+				$url = 'https://www.capitalbikeshare.com/member/rentals/' . $index;
+				$page = $this->request($url);
 				
 				$html = \ThauEx\SimpleHtmlDom\SHD::strGetHtml($page);
 				$pageTrips = 0;
@@ -45,6 +47,25 @@ class RentalsEndpoint extends BikeshareParser
 					$parts = explode('/', trim($html->find('.pagination a', -1)->href, '/'));
 					$lastPageIndex = $parts[count($parts) - 1];
 				}
+
+				if (!is_object($html)) {
+					throw new APIException('Could not parse ' . $url);
+				}
+
+				if (is_object($html->find('input[id=username]', 0)) && $reauthenticateTries < 3) {
+					// Try to reauthenticate
+					sleep(2);
+					$this->authenticate();
+					$reauthenticateTries++;
+					continue;
+				}
+
+				if (!is_object($html->find('table', 1))) {
+					throw new APIException('Could not find table ' . $url);
+				}
+
+				// Reset counter
+				$reauthenticateTries = 0;
 
 				foreach ($html->find('table', 1)->find('tr') as $row)
 				{
